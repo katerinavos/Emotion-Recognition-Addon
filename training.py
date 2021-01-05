@@ -1,4 +1,5 @@
 from localbinarypatterns import LocalBinaryPatterns
+from preprocessing import histogramequalization
 from sklearn.svm import LinearSVC, SVC
 import cv2
 import os
@@ -14,7 +15,6 @@ labels = []
 project_dir = os.path.abspath(os.path.join(__file__, os.pardir))
 dataset_dir = os.path.join(project_dir, 'dataset')
 trainset_dir = os.path.join(dataset_dir, 'train')
-validation_dir = os.path.join(dataset_dir, 'validation')
 
 haar_classifier = cv2.CascadeClassifier(os.path.join(project_dir, 'haar/haarcascade_frontalface_alt.xml'))
 
@@ -34,6 +34,7 @@ for root, dirs, files in os.walk(trainset_dir):
         for x, y, w, h in face:
             # cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
             face_roi = image_array[y:y + h, x: x + w]
+            #imgo = histogramequalization(face_roi)
             cropped_face = cv2.resize(face_roi, (48, 48), interpolation=cv2.INTER_AREA)
             # print("face roi", face_roi.shape, type(face_roi))
             hist = desc.describe(cropped_face)
